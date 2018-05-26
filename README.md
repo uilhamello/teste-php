@@ -3,52 +3,44 @@
 ## Projeto
 Desenvolver uma aplicação simples com um CRUD de produtos
 
-# Requisitos
+# Instalação
 
-#### CRUD de Produtos
+- git clone https://github.com/uilhamello/teste-php.git
 
-Criar o gerenciamento de categorias do Sistema, onde seja possível Listar, Criar, Editar e Excluir Produtos.
+- Dar permissão de escrita no diretório /config/ Ex: chmod 0755 -R config/  ou alterando o Owner da pasta ao do server' User.
 
+- Acessar o projeto via Browser. Ex: http://localhost/
 
-##### Atributos de um Produto são:
-- Nome
-- Descrição
-- Quantidade
-- Preço
-- Data/Hora de Cadastro
-- Data/Hora da Última Atualização
+- Uma página amigável solicitará os dados de conexão. Se a conexão foi efetuado com os dados informados, 
+a página é redirecionada a página de login.
 
-## Descrição da Aplicação
+- Crie um usuário clicando no botão "Registrar-se"
 
-#### Home
-
-- Uma home simples com um menu para o Controle de **Produtos**
-- Deve apresentar um quadro que mostre todos os produtos que estão com 3 ou menos volumes em estoque.
-- Deve apresentar um quadro com os cinco últimos produtos movimentados no estoque.
-
-#### Controle de Produtos
-
-- Um botão no topo para o cadastramento de um novo **Produto**.
-- Uma listagem com todos os produtos cadastrados no sistema, ordenados por **Nome** e **Preço**. Os campos que serão apresentados na listagem são: id, nome, quantidade, preço e Ação.
-    - A coluna com o nome do produto deve ser um link que direciona o usuário aos detalhes do produto (*Pode ser um Modal*).
-    - A coluna Ação deve possuir quatro botões, **Editar**, **Excluir**, **Reduzir Estoque**, **Aumentar Estoque**.
-        - Botão Editar - Deve direcionar o usuário a uma tela onde o Nome, Descrição, Preço e Quantidade do produto possam ser Alterados.
-        - Botão Excluir - Exclui o Produto do Sistema.
-        - Botão Reduzir o Estoque - Deve reduzir em 1 a quantidade do Produto no Estoque.
-        - Botão Aumentar o Estoque - Deve aumentar em 1 a quantidade do Produto no Estoque.
-    - As linhas onde a quantidade de produtos seja igual ou inferior a 3 devem possuir um destaque a escolha do desenvolvedor.
+- Será redirecionado à área privada onde poderá executar todas as ações requisitadas com a Model "Produtos"
 
 
-# Instruções:
-- Faça fork desse repositório envie um Pull Request quando estiver pronto.
-- Últilizar php 5.6 ou superior
-- Últilizar Banco de Dados MySQL ou MariaDB
-    - As tabelas devem ser criadas através de Migrations.
-- Não é permitido a utilização de **NENHUM** framework php
-- Últilizar as bibliotecas `mysqli` ou `pdo` para efetuar a comunicação com o Banco de Dados
-- Não será permitido o uso de bibliotecas como Eloquent ou Doctrine.
-- Seguir os padrões das PSRs.
-- Criar um README com as instruções de como instalar a aplicação.
+## Descrição do Projeto
+
+- Está desenvolvido com PHP Puro, PDO. 
+- Organizado pela metodologia MVC
+- Sistema de Migration para estruturar o banco de dados através do PHP. Desenvolví tomando como exemplo as nomenclaturas do Láravel.
+- Arquivo de Route, porque todas as requisições estão centralizadas na Index do projeto, que destribui por módulos.
+- A camada da View está em HTML puro, através de uma classe HTML na LIBs, que faz replace com os dados do Controller.
+
+## Estrutura do Projeto
+
+#### Libs/
+
+- É o core do projeto, uma biblioteca de class PHP Puro, estruturado em MVC, que executam as tarefas triviais de cada camada.
+
+#### App/
+
+- Uma estrutura MVC d aaplicação que será executado.
+
+#### Config/
+
+- Todas as configurações do sistema, como banco de ados, ambiente etc.
+-Aqui é gerado o config.ini onde ficam armazenadas os dados informados para a conexão ao banco de dados.
 
 
-### Boa Sorte!
+### Muito Obrigado!
