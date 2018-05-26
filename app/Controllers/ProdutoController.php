@@ -36,7 +36,7 @@ class ProdutoController extends Controller
                 $class = "";
                 $array_keys = array_keys($value);
                 if($result[$key]['quantidade'] <= 3){
-                    $class=" atemption";
+                    $class=" warning";
                 }
                 $table .= '<tr>';
                 foreach ($array_keys as $key=>$val){
