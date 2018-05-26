@@ -95,9 +95,9 @@ class Migration
         self::setFields("`".$name."` VARCHAR(".$size.")".self::nullable($nullable));
     }
 
-    public static function integer($name, $nullable=true)
+    public static function integer($name,  $size=10, $nullable=true)
     {
-        self::setFields("`".$name."` DATETIME ".self::nullable($nullable));
+        self::setFields("`".$name."` INT(".$size.") ".self::nullable($nullable));
     }
 
     public static function datetime($name, $nullable=true)

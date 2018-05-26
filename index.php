@@ -17,6 +17,8 @@ define('APP_VIEWS', SYS_ROOT.'/app/views/');
 //Define a constante with de path enviroment
 define('APP_MIGRATION', SYS_ROOT.'/app/Migrations/');
 //Define a constante with de path enviroment
+define('SYS_ROUTE', SYS_ROOT.'/app/Routes/');
+//Define a constante with de path enviroment
 define('SYS_CONFIG', SYS_ROOT.'/config/');
 
 //INclude the autoload configuration

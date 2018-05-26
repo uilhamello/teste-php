@@ -62,27 +62,52 @@ class SQLBuilder{
 	public function getTable()
 	{
 		return $this->table;
-	}	
-
-	/**
-	 * [setWhere description]
-	 * @param [type] $_where [description]
-	 */
-	public function where($field, $value_or_operator, $value_or_null=NULL, $type=NULL)
-	{
-		//if it's not empty means there are a value to a specific sql'operator to use like '=', is not', 'like'
-		if(!empty($value_or_null)){
-			$value = $value_or_null;
-			$operator = $value_or_operator;
-		} else {
-			$value = $value_or_operator;
-			$operator = '=';			
-		}
-		if($this->query_exec_active){
-			$this->query_exec .= ' and '.$field.' '.$operator."'".$value."'";
-		}
-		return $this;
 	}
+
+    /**
+     * [setWhere description]
+     * @param [type] $_where [description]
+     */
+    public function where($field, $value_or_operator, $value_or_null=NULL, $type=NULL)
+    {
+        //if it's not empty means there are a value to a specific sql'operator to use like '=', is not', 'like'
+        if(!empty($value_or_null)){
+            $value = $value_or_null;
+            $operator = $value_or_operator;
+        } else {
+            $value = $value_or_operator;
+            $operator = '=';
+        }
+        if($this->query_exec_active){
+            $this->query_exec .= ' and '.$field.' '.$operator."'".$value."'";
+        }
+        return $this;
+    }
+
+    /**
+     * @param $limit
+     * @param null $setOf
+     */
+    public function limit($_limit, $setOf=null)
+    {
+        $limit = " LIMIT ".$_limit;
+        if(!empty($setOf)){
+            $limit .= " OFFSET ".$setOf;
+        }
+        if($this->query_exec_active){
+            $this->query_exec .= $limit;
+        }
+        return $this;
+    }
+
+    public function order($field, $order = "ASC" )
+    {
+        $order = " ORDER BY $field $order";
+        if($this->query_exec_active){
+            $this->query_exec .= $order;
+        }
+        return $this;
+    }
 
 	/**
 	 * [getWhere description]
@@ -220,47 +245,92 @@ class SQLBuilder{
 		}		
 	}
 
-	public function insert($array_values)
-	{
-		if(!isset($this->fillable) or empty($this->fillable)){
-			die('Error: Please, you need to inform the \'Fillable\' table fields in your models');
-		}
-		$table_fields = '';
-		$fields_values = '';
-		$first = true;
-		$bind_array = [];
-		foreach ($this->fillable as $key => $value) {
-			if(array_key_exists($value, $array_values)){
-				if(!$first){
-					$table_fields  .= ',';
-					$fields_values .= ',';
-				}
-				$table_fields  .= $value;
-				$fields_values .= ":".$value."";
-				$bind_array[$value] = ['value'=>$array_values[$value]];
-				$first = false;
-			}
-		}
+    public function insert($array_values)
+    {
+        if(!isset($this->fillable) or empty($this->fillable)){
+            die('Error: Please, you need to inform the \'Fillable\' table fields in your models');
+        }
+        $table_fields = '';
+        $fields_values = '';
+        $first = true;
+        $bind_array = [];
+        foreach ($this->fillable as $key => $value) {
+            if(array_key_exists($value, $array_values)){
+                if(!$first){
+                    $table_fields  .= ',';
+                    $fields_values .= ',';
+                }
+                $table_fields  .= $value;
+                $fields_values .= ":".$value."";
+                $bind_array[$value] = ['value'=>$array_values[$value]];
+                $first = false;
+            }
+        }
 
-		if( $this->time_stamp && !$first ){
-			$table_fields  .= ', created_at';
-			$fields_values .= ", :created_at";	
-			$bind_array['created_at'] = ['value'=> date('Y-m-d H:i:s')];
-		}
+        if( $this->time_stamp && !$first ){
+            $table_fields  .= ', created_at';
+            $fields_values .= ", :created_at";
+            $bind_array['created_at'] = ['value'=> date('Y-m-d H:i:s')];
+        }
 
-		$this->bind_array = $bind_array;
-		$this->query_exec = "insert into ".$this->table." (".$table_fields.") values (".$fields_values.")";
+        $this->bind_array = $bind_array;
+        $this->query_exec = "insert into ".$this->table." (".$table_fields.") values (".$fields_values.")";
 
-		if($this->exec()){
-			return $this->factory_db->getLastInsertId();
-		}
-		else{
-			return false;
-		}
-	}
+        if($this->exec()){
+            return $this->factory_db->getLastInsertId();
+        }
+        else{
+            return false;
+        }
+    }
 
+    public function updateById($array_values)
+    {
+        if(!isset($this->fillable) or empty($this->fillable)){
+            die('Error: Please, you need to inform the \'Fillable\' table fields in your models');
+        }
+        $id = $array_values[$this->getIdName()];
+        if(!$id) {
+            die(" ID não informado.");
+        }
+        $table_fields = '';
+        $first = true;
+        $bind_array = [];
+        foreach ($this->fillable as $key => $value) {
+            if(array_key_exists($value, $array_values)){
+                if(!$first){
+                    $table_fields  .= ',';
+                }
+                $table_fields  .= $value ."=:".$value;
+                $bind_array[$value] = ['value'=>$array_values[$value]];
+                $first = false;
+            }
+        }
 
-	public function get()
+        if( $this->time_stamp && !$first ){
+            $table_fields  .= ', updated_at=:updated_at';
+            $bind_array['updated_at'] = ['value'=> date('Y-m-d H:i:s')];
+        }
+
+        $this->bind_array = $bind_array;
+        $this->query_exec = "update ".$this->table." set ".$table_fields.$this->whereById($id);
+
+        return $this->exec();
+    }
+
+    public function deleteById($id)
+    {
+        $this->query_exec = "delete from ".$this->table.$this->whereById($id);
+        return $this->exec();
+
+    }
+
+    public function whereById($id)
+    {
+      return  "  where ".$this->getIdName()."=". $id." ";
+    }
+
+    public function get()
 	{
 		$this->factory_db->setQueries($this->query_exec);
 		$this->factory_db->prepareQuery();

@@ -46,21 +46,56 @@ $ROUTE_MODULES = [
 		'method' => 'logout',
 		'view' => 'login.html'
 	],
-	'helloworld' => [
-		'controller' => 'HelloWorldController',
+	'produto' => [
+		'controller' => 'ProdutoController',
 		'method' => 'index',
-		'view' => 'helloworld.html'
+		'view' => 'produto/index.html'
 	],
-	'logout' => [
-		'controller' => 'LoginController',
-		'method' => 'logout',
-		'view' => 'login.html'
-	],
-	'logout' => [
-		'controller' => 'LoginController',
-		'method' => 'logout',
-		'view' => 'login.html'
-	],
+    'produto_update' => [
+        'controller' => 'ProdutoController',
+        'method' => 'update',
+        'view' => 'produto/update.html'
+    ],
+    'produto_alter' => [
+        'controller' => 'ProdutoController',
+        'method' => 'alter',
+        'view' => ''
+    ],
+    'produto_create' => [
+        'controller' => 'ProdutoController',
+        'method' => 'create',
+        'view' => 'produto/create.html'
+    ],
+    'produto_store' => [
+        'controller' => 'ProdutoController',
+        'method' => 'store',
+        'view' => ''
+    ],
+    'produto_delete' => [
+        'controller' => 'ProdutoController',
+        'method' => 'delete',
+        'view' => ''
+    ],
+    'produto_reduzir' => [
+        'controller' => 'ProdutoController',
+        'method' => 'reduzir',
+        'view' => ''
+    ],
+    'produto_aumentar' => [
+        'controller' => 'ProdutoController',
+        'method' => 'aumentar',
+        'view' => ''
+    ],
+    'produto_falta' => [
+        'controller' => 'ProdutoController',
+        'method' => 'movimento',
+        'view' => ''
+    ],
+    'produto_movimento' => [
+        'controller' => 'ProdutoController',
+        'method' => 'falta',
+        'view' => ''
+    ],
 ];
 
 /**

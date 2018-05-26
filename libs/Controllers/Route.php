@@ -11,7 +11,7 @@ class Route{
 		// 	or !isset($_SESSION['LIB_XX_ROUTE_MODULES'])
 		// 	or !isset($_SESSION['LIB_XX_ACCESS_LOGGIN'])){
 		// }
-		require(SYS_CONFIG."routes.php");
+		require(SYS_ROUTE."routes.php");
 	}
 
 	public static function getLoginRoute()
